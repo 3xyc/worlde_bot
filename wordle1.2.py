@@ -147,9 +147,9 @@ def simulate(words_input, greens_input, words_dict):
             print(word_input[g])
             if word_input[g] in yellows:
                 del yellows[word_input[g]]
-        #apply_greens(alph_pos, greens)
-        #apply_yellows(alph_pos, yellows)
-        #apply_blacks(alph_pos, blacks)
+        apply_greens(alpha_pos, greens)
+        apply_yellows(alpha_pos, yellows)
+        apply_blacks(alpha_pos, blacks)
 
         words_dict = check(alpha_pos, greens, yellows, blacks, words_dict)
         print(words_dict)
@@ -211,11 +211,15 @@ def play(words_dict, guess_list):
 
         relevancy_dict = relevancy_score(guess_list)
 
-        print(words_dict)
-        print('list', guess_list)
-        print('sorted by vowels: ', sorted(sorted_by_vowels, key = lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
-        print(compare_guess(guess_list, relevancy_dict))
-        print(len(words_dict))
+        output = ('sorted by vowels: ', sorted(sorted_by_vowels,
+                                        key = lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
+
+        output_relevant = compare_guess(guess_list, relevancy_dict)
+
+
+        print(output)
+        print(output_relevant)
+        print(len(words_dict) + len(output))
 
 
         if len(words_dict) == 1:
@@ -227,7 +231,7 @@ def play(words_dict, guess_list):
 
 
 
-def relevancy_score(input_dict): #wie guess_list importieren?
+def relevancy_score(input_dict):
     import csv
 
     with open('word_frequency.csv', mode='r') as inp:
@@ -252,7 +256,7 @@ def compare_guess(guess_list, relevancy_dict):
 
     solution_list = [word for (key, word) in relevancy_dict.items() if word in guess_list]
 
-    return(solution_list)
+    return solution_list
 
 
 def pre_processing():

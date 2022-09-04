@@ -170,15 +170,14 @@ def play(words_dict, guess_list):
         alpha_pos.update({b: {i: n for i in range(n)}})
     greens, yellows, blacks = {}, {}, {}
 
-
     while len(words_dict) >= 1:
-
         new_greens = green_input
         new_greens = [int(s) for s in new_greens.split(" ") if len(new_greens) != 0]
         {val_append(greens, s.lower(), i) for i, s in enumerate(word_input) if i in new_greens}
         {val_append(yellows, s.lower(), i) for i, s in enumerate(word_input) if s.isupper() and i not in new_greens}
 
         new_yellows = [s.lower() for i, s in enumerate(word_input) if s.isupper() and i not in new_greens]
+        print(new_yellows)
         print("before")
         print(word_input)
         print(blacks)
@@ -217,14 +216,11 @@ def play(words_dict, guess_list):
         print(compare_guess(guess_list, relevancy_dict))
         print(len(words_dict))
 
-
         if len(words_dict) == 1:
             print("solution: "+words_dict.pop())
             exit()
         word_input = input("word: ")
         green_input = input("greens: ")
-
-
 
 
 def relevancy_score(input_dict): #wie guess_list importieren?
@@ -245,7 +241,6 @@ def relevancy_score(input_dict): #wie guess_list importieren?
             relevancy_dict[key] = value
     #print("Sortiert nach Relevanz: ", relevancy_dict)
     return relevancy_dict
-
 
 
 def compare_guess(guess_list, relevancy_dict):

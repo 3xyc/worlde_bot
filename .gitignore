@@ -108,6 +108,7 @@ pip-selfcheck.json
 
 #PYcharm Stuff
 .idea/*
+.idea/misc.xml
 
 
 # User-specific stuff

@@ -1,3 +1,4 @@
+import random
 
 def load_words(l = 5):
     with open('words_alpha.txt') as word_file:
@@ -216,18 +217,16 @@ def play(words_dict, guess_list):
 
         output_relevant = compare_guess(guess_list, relevancy_dict)
 
-
+        # output = liste, output relevant = relevanzliste
         print(output)
         print(output_relevant)
         print(len(words_dict) + len(output))
-
-
+        print(generate_guess(guess_list, output_relevant))
         if len(words_dict) == 1:
             print("solution: "+words_dict.pop())
             exit()
         word_input = input("word: ")
         green_input = input("greens: ")
-
 
 
 
@@ -254,9 +253,17 @@ def relevancy_score(input_dict):
 
 def compare_guess(guess_list, relevancy_dict):
 
-    solution_list = [word for (key, word) in relevancy_dict.items() if word in guess_list]
+    output_relevant = [word for (key, word) in relevancy_dict.items() if word in guess_list]
 
-    return solution_list
+    return output_relevant
+
+
+def generate_guess(guess_list, output_relevant):
+    if len(output_relevant) > 0:
+        print ('GUESS: ', random.choice(output_relevant))
+
+    else:
+        print('GUESS:', random.choice(guess_list))
 
 
 def pre_processing():
@@ -264,12 +271,17 @@ def pre_processing():
     words_dict = {word: 1 for word in english_words if len(word) == 5}
     guess_list = [word for word in words_dict]
     relevancy_dict = relevancy_score(words_dict)
+    output_relevant = compare_guess(guess_list, relevancy_dict)
+
 
     print(play(words_dict, guess_list))
+    print('GUESS: ', generate_guess(guess_list, output_relevant))
+
 
 
 if __name__ == '__main__':
     pre_processing()
+
 
 
     '''

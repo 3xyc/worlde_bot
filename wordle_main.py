@@ -160,11 +160,10 @@ def simulate(words_input, greens_input, words_dict):
         print(blacks)
 
 
-def play(words_dict, guess_list):
+def play(words_dict, word_input, green_input):
     alph = 'abcdefghijklmnopqrstuvwxyz'
     alpha_pos = {}
-    word_input = input("word: ")
-    green_input = input("greens: ")
+
     n = len(word_input)
     for b in alph:
         alpha_pos.update({b: {i: n for i in range(n)}})
@@ -174,7 +173,7 @@ def play(words_dict, guess_list):
     while len(words_dict) >= 1:
 
         new_greens = green_input
-        new_greens = [int(s) for s in new_greens.split(" ") if len(new_greens) != 0]
+        #new_greens = [int(s) for s in new_greens.split(" ") if len(new_greens) != 0]
         {val_append(greens, s.lower(), i) for i, s in enumerate(word_input) if i in new_greens}
         {val_append(yellows, s.lower(), i) for i, s in enumerate(word_input) if s.isupper() and i not in new_greens}
 
@@ -264,13 +263,14 @@ def pre_processing():
     words_dict = {word: 1 for word in english_words if len(word) == 5}
     guess_list = [word for word in words_dict]
     relevancy_dict = relevancy_score(words_dict)
+    return words_dict, guess_list
 
-    print(play(words_dict, guess_list))
 
 
 if __name__ == '__main__':
-    pre_processing()
+    words_dict, guess_list = pre_processing()
 
+    print(play(words_dict, "lOool", [1]))
 
     '''
    # run relevancy_score:

@@ -5,9 +5,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
-import time
-
-from wordle_bot.wordle_main import pre_processing, play
 
 class WordleConnection:
 
@@ -51,34 +48,14 @@ class WordleConnection:
         return keyboard
 
     def get_coloring(self):
-        time.sleep(2)
-        result = ""
         if self.current_index < 25:
-            greens = []
-            for i, tile in enumerate(self.tiles[self.current_index:self.current_index+5:]):
-                state = tile.get_attribute("data-state")
-                if state == 'absent':
-                    result+=tile.text.lower()
-                elif state == "correct":
-                    result+=tile.text.upper()
-                    greens.append(i)
-                elif state == "present":
-                    result+=tile.text.upper()
-                else:
-                    for i in range(5):
-                        self.keyboard["del"].click()
-        print(result)
-        print(greens)
-        return result, greens
-
-
-
+            for tile in self.tiles[self.current_index:self.current_index+5:]:
+                print(dir(tile))
         self.current_index += 5
 
     def write(self, guess="guess"):
         for b in guess:
             self.keyboard[b].click()
-        self.keyboard["enter"].click()
         return self.get_coloring()
 
 
@@ -98,6 +75,7 @@ if __name__ == "__main__":
             if c == "w":
                 guess = input("enter guess: ")
                 wordle_connection.write(guess=guess)
+                wordle_connection.get_keyboard()
         except:
             print(traceback())
     wordle_connection.disconnect()

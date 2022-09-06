@@ -1,4 +1,5 @@
 import random
+import wordle_bot.web_driver_connection.main_driver
 
 def load_words(l = 5):
     with open('words_alpha.txt') as word_file:
@@ -41,8 +42,8 @@ def check_yellows(word, yellows):
         if i not in word:
             valid = False
 
-    print("filtering for yellow condition")
-    print(valid)
+    #print("filtering for yellow condition")
+    #print(valid)
 
 
     return valid
@@ -143,9 +144,9 @@ def simulate(words_input, greens_input, words_dict):
 
         word_input = word_input.lower()
         for g in new_greens:
-            print("!!!")
-            print(g)
-            print(word_input[g])
+           # print("!!!")
+           # print(g)
+           # print(word_input[g])
             if word_input[g] in yellows:
                 del yellows[word_input[g]]
         apply_greens(alpha_pos, greens)
@@ -161,36 +162,32 @@ def simulate(words_input, greens_input, words_dict):
         print(blacks)
 
 
-def play(words_dict, word_input, green_input):
+def play(words_dict):
     alph = 'abcdefghijklmnopqrstuvwxyz'
     alpha_pos = {}
 
-    n = len(word_input)
-    for b in alph:
-        alpha_pos.update({b: {i: n for i in range(n)}})
-    greens, yellows, blacks = {}, {}, {}
+    web_connector = wordle_bot.web_driver_connection.main_driver.WordleConnection()
 
+    for b in alph:
+        alpha_pos.update({b: {i: 5 for i in range(5)}})
+    greens, yellows, blacks = {}, {}, {}
+    next_guess = "salet"
 
     while len(words_dict) >= 1:
+        x = input("wait..")
+        print(web_connector.read_last_row())
 
-        new_greens = green_input
+        word_input, new_greens = web_connector.write(guess = next_guess)
         #new_greens = [int(s) for s in new_greens.split(" ") if len(new_greens) != 0]
         {val_append(greens, s.lower(), i) for i, s in enumerate(word_input) if i in new_greens}
         {val_append(yellows, s.lower(), i) for i, s in enumerate(word_input) if s.isupper() and i not in new_greens}
 
         new_yellows = [s.lower() for i, s in enumerate(word_input) if s.isupper() and i not in new_greens]
-        print("before")
-        print(word_input)
-        print(blacks)
-        for i, s in enumerate(word_input):
-            print(i)
-            print(s)
-            print(i not in new_greens)
-            print(i not in new_yellows)
+
         {val_append(blacks, s.lower(), i) for i, s in enumerate(word_input) if
          (s.islower() and s not in [word_input[new_g].lower() for new_g in new_greens] and i not in new_yellows)}
 
-        print(blacks)
+
         word_input = word_input.lower()
         for g in new_greens:
             print("!!!")
@@ -220,12 +217,12 @@ def play(words_dict, word_input, green_input):
         print(output)
         print(output_relevant)
         print(len(words_dict) + len(output))
-        print(generate_guess(guess_list, output_relevant))
+        next_guess = generate_guess(guess_list, output_relevant)
+        print(next_guess)
         if len(words_dict) == 1:
             print("solution: "+words_dict.pop())
             exit()
-        word_input = input("word: ")
-        green_input = input("greens: ")
+
 
 
 
@@ -259,10 +256,13 @@ def compare_guess(guess_list, relevancy_dict):
 
 def generate_guess(guess_list, output_relevant):
     if len(output_relevant) > 0:
-        print ('GUESS: ', random.choice(output_relevant))
-
+        guess = random.choice(output_relevant)
+        print ('GUESS: ', guess)
+        return guess
     else:
-        print('GUESS:', random.choice(guess_list))
+        guess = random.choice(guess_list)
+        print('GUESS:',guess)
+        return guess
 
 
 def pre_processing():
@@ -274,7 +274,7 @@ def pre_processing():
     output_relevant = compare_guess(guess_list, relevancy_dict)
 
 
-    print(play(words_dict, guess_list))
+    print(play(words_dict))
     print('GUESS: ', generate_guess(guess_list, output_relevant))
 
     return words_dict, guess_list
@@ -284,7 +284,7 @@ def pre_processing():
 if __name__ == '__main__':
     words_dict, guess_list = pre_processing()
 
-    print(play(words_dict, "lOool", [1]))
+    print(play(words_dict))
 
 
     '''

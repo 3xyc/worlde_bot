@@ -7,7 +7,6 @@ from selenium.webdriver.common.by import By
 
 import time
 
-from wordle_bot.wordle_main import pre_processing, play
 
 class WordleConnection:
 
@@ -57,6 +56,7 @@ class WordleConnection:
             greens = []
             for i, tile in enumerate(self.tiles[self.current_index:self.current_index+5:]):
                 state = tile.get_attribute("data-state")
+                print(state)
                 if state == 'absent':
                     result+=tile.text.lower()
                 elif state == "correct":
@@ -65,6 +65,7 @@ class WordleConnection:
                 elif state == "present":
                     result+=tile.text.upper()
                 else:
+                    print("HEREEE")
                     for i in range(5):
                         self.keyboard["del"].click()
         print(result)
@@ -86,7 +87,7 @@ class WordleConnection:
 
 
 if __name__ == "__main__":
-    wordle_connection = WordleConnection("guess")
+    wordle_connection = WordleConnection()
 
     while True:
         try:

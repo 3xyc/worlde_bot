@@ -1,5 +1,7 @@
 import random
 import web_driver_connection.main_driver
+import web_driver_connection.main_driver
+import os
 
 def load_words(l = 5):
     with open('words_alpha.txt') as word_file:
@@ -30,7 +32,6 @@ def check_greens(word, greens):
 
 
 def check_yellows(word, yellows):
-    print('yellowss:', yellows)
     print(word)
     valid = not any([True for buchstabe in yellows for i in yellows[buchstabe] if word[i] == buchstabe])
     for i, s in enumerate(word):
@@ -171,13 +172,30 @@ def play(words_dict):
     for b in alph:
         alpha_pos.update({b: {i: 5 for i in range(5)}})
     greens, yellows, blacks = {}, {}, {}
-    next_guess = "salet"
+    next_guess = "aaaaa"
 
+    guess_list = [word for word in words_dict]
+    sorted_by_vowels = sorted(guess_list, key=lambda word: sum(ch in 'aeiou' for ch in word), reverse=True)
+    relevancy_dict = relevancy_score(guess_list)
+
+    output = ('sorted by vowels: ', sorted(sorted_by_vowels,
+                                           key=lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
+
+    output_relevant = compare_guess(guess_list, relevancy_dict)
     while len(words_dict) >= 1:
         x = input("wait..")
         print(web_connector.read_last_row())
 
         word_input, new_greens = web_connector.write(guess = next_guess)
+        while not word_input:
+            print("here")
+            print(word_input)
+            next_guess = generate_guess(guess_list, output_relevant)
+            print("next_guess")
+            print(next_guess)
+            word_input, new_greens = web_connector.write(guess=next_guess)
+
+
         #new_greens = [int(s) for s in new_greens.split(" ") if len(new_greens) != 0]
         {val_append(greens, s.lower(), i) for i, s in enumerate(word_input) if i in new_greens}
         {val_append(yellows, s.lower(), i) for i, s in enumerate(word_input) if s.isupper() and i not in new_greens}
@@ -204,7 +222,7 @@ def play(words_dict):
 
         guess_list = [word for word in words_dict]
 
-        sorted_by_vowels = sorted(guess_list, key = lambda word: sum(ch in 'aeiou' for ch in word), reverse = True)
+        sorted_by_vowels = sorted(guess_list, key = lambda word: sum(ch in 'aeiou' for ch in word))
 
         relevancy_dict = relevancy_score(guess_list)
 
@@ -219,8 +237,6 @@ def play(words_dict):
         print(len(words_dict) + len(output))
         next_guess = generate_guess(guess_list, output_relevant)
         print(next_guess)
-        if len(words_dict) == 1:
-            print("solution: "+words_dict.pop())
 
 
 def relevancy_score(input_dict):
@@ -253,10 +269,14 @@ def compare_guess(guess_list, relevancy_dict):
 
 def generate_guess(guess_list, output_relevant):
     if len(output_relevant) > 0:
+        print("output relevannt")
+        print(output_relevant)
         guess = random.choice(output_relevant)
         print ('GUESS: ', guess)
         return guess
     else:
+        print("guess_list")
+        print(guess_list)
         guess = random.choice(guess_list)
         print('GUESS:',guess)
         return guess
@@ -273,7 +293,6 @@ def pre_processing():
 
 
     print(play(words_dict))
-    print('GUESS: ', generate_guess(guess_list, output_relevant))
 
     return words_dict, guess_list
 

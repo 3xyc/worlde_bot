@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 
+import os
 import time
 
 
@@ -20,7 +21,10 @@ class WordleConnection:
         options = Options()
         options.headless = headless
         url = "https://www.nytimes.com/games/wordle/index.html"
-        chrome_service = Service("C:\Program Files\Chromedriver\chromedriver.exe")
+        if os.name =="nt":
+            chrome_service = Service("C:\Program Files\Chromedriver\chromedriver.exe")
+        else:
+            chrome_service = Service("User/a1/Downloads/Code/chromedrivere")
         driver = webdriver.Chrome(service=chrome_service, options=options)
         driver.get(url)
         return driver
@@ -68,6 +72,8 @@ class WordleConnection:
                     print("HEREEE")
                     for i in range(5):
                         self.keyboard["del"].click()
+                    return False, False
+            self.current_index +=5
         print(result)
         print(greens)
         return result, greens
@@ -77,6 +83,7 @@ class WordleConnection:
         self.current_index += 5
 
     def write(self, guess="guess"):
+        print("Try to write: ",guess)
         for b in guess:
             self.keyboard[b].click()
         self.keyboard["enter"].click()

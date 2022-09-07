@@ -26,7 +26,7 @@ class WordleConnection:
         if os.name =="nt":
             chrome_service = Service("C:\Program Files\Chromedriver\chromedriver.exe")
         else:
-            chrome_service = Service("User/a1/Downloads/Code/chromedrivere")
+            chrome_service = Service("/Users/a1/Downloads/Code/chromedriver")
         driver = webdriver.Chrome(service=chrome_service, options=options)
         driver.get(url)
 

@@ -182,6 +182,7 @@ def play(words_dict):
                                            key=lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
 
     output_relevant = compare_guess(guess_list, relevancy_dict)
+    input("load...")
     while len(words_dict) >= 1:
         print(web_connector.read_last_row())
 

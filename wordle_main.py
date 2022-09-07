@@ -237,7 +237,7 @@ def relevancy_score(input_dict):
 
     for (key, value) in dict_from_csv.items():
         # Check if len == 5
-        if len(key) == 5:
+        if len(value) == 5:
             relevancy_dict[key] = value
     #print("Sortiert nach Relevanz: ", relevancy_dict)
     return relevancy_dict

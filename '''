@@ -1,0 +1,14 @@
+
+# Bitte geben Sie eine Commit-Beschreibung für Ihre Änderungen ein. Zeilen,
+# die mit '#' beginnen, werden ignoriert, und eine leere Beschreibung
+# bricht den Commit ab.
+#
+# Auf Branch main
+# Ihr Branch ist 1 Commit hinter 'origin/main', und kann vorgespult werden.
+#   (benutzen Sie "git pull", um Ihren lokalen Branch zu aktualisieren)
+#
+# Zum Commit vorgemerkte Änderungen:
+#	neue Datei:     unigram_freq.csv
+#	geändert:       web_driver_connection/main_driver.py
+#	geändert:       wordle_main.py
+#

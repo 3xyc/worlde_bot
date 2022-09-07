@@ -12,14 +12,16 @@ import time
 class WordleConnection:
 
     def __init__(self, headless=False):
+        self.headless = headless
         self.driver = self.connect()
         self.board, self.tiles = self.load_board_and_tiles()
         self.current_index = 0
         self.keyboard = self.load_keyboard()
 
-    def connect(headless=False):
+
+    def connect(self):
         options = Options()
-        options.headless = headless
+        options.headless = self.headless
         url = "https://www.nytimes.com/games/wordle/index.html"
         if os.name =="nt":
             chrome_service = Service("C:\Program Files\Chromedriver\chromedriver.exe")
@@ -27,6 +29,7 @@ class WordleConnection:
             chrome_service = Service("User/a1/Downloads/Code/chromedrivere")
         driver = webdriver.Chrome(service=chrome_service, options=options)
         driver.get(url)
+
         return driver
 
     def disconnect(self):

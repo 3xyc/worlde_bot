@@ -1,5 +1,5 @@
 import random
-import wordle_bot.web_driver_connection.main_driver
+import web_driver_connection.main_driver
 
 def load_words(l = 5):
     with open('words_alpha.txt') as word_file:
@@ -166,7 +166,7 @@ def play(words_dict):
     alph = 'abcdefghijklmnopqrstuvwxyz'
     alpha_pos = {}
 
-    web_connector = wordle_bot.web_driver_connection.main_driver.WordleConnection()
+    web_connector = web_driver_connection.main_driver.WordleConnection()
 
     for b in alph:
         alpha_pos.update({b: {i: 5 for i in range(5)}})
@@ -221,17 +221,14 @@ def play(words_dict):
         print(next_guess)
         if len(words_dict) == 1:
             print("solution: "+words_dict.pop())
-            exit()
-
-
 
 
 def relevancy_score(input_dict):
     import csv
 
-    with open('word_frequency.csv', mode='r') as inp:
+    with open('unigram_freq.csv', mode='r') as inp:
         word_frequency = csv.reader(inp)
-        dict_from_csv = {int(rows[0]): rows[1] for rows in word_frequency}
+        dict_from_csv = {int(rows[1]): rows[0] for rows in word_frequency}
 
     #print(dict_from_csv)
 
@@ -240,7 +237,7 @@ def relevancy_score(input_dict):
 
     for (key, value) in dict_from_csv.items():
         # Check if len == 5
-        if len(value) == 5:
+        if len(key) == 5:
             relevancy_dict[key] = value
     #print("Sortiert nach Relevanz: ", relevancy_dict)
     return relevancy_dict
@@ -270,6 +267,7 @@ def pre_processing():
     words_dict = {word: 1 for word in english_words if len(word) == 5}
     guess_list = [word for word in words_dict]
     relevancy_dict = relevancy_score(words_dict)
+    frequent_words = open('unigram_freq.csv', mode='r')
 
     output_relevant = compare_guess(guess_list, relevancy_dict)
 

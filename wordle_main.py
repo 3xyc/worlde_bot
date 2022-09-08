@@ -269,7 +269,7 @@ def compare_guess(guess_list, relevancy_dict):
 
 def generate_guess(guess_list, output_relevant):
     if len(output_relevant) > 0:
-        print("output relevannt")
+        print("output relevant")
         print(output_relevant)
         guess = random.choice(output_relevant)
         print ('GUESS: ', guess)

@@ -17,12 +17,14 @@ class WordleConnection:
         self.board, self.tiles = self.load_board_and_tiles()
         self.current_index = 0
         self.keyboard = self.load_keyboard()
+        self.close_pop_ups()
 
 
     def connect(self):
         options = Options()
         options.headless = self.headless
         url = "https://www.nytimes.com/games/wordle/index.html"
+        #url = "https://wordlegame.org/"
         if os.name =="nt":
             chrome_service = Service("C:\Program Files\Chromedriver\chromedriver.exe")
         else:
@@ -80,6 +82,21 @@ class WordleConnection:
         print(result)
         print(greens)
         return result, greens
+
+    def close_pop_ups(self):
+        close_button_1 = self.driver.find_element(By.ID, "pz-gdpr-btn-closex")
+        close_button_1.click()
+
+        close_button_2 = self.driver.find_element(By.CLASS_NAME, "dark")
+
+        action = webdriver.common.action_chains.ActionChains(self.driver)
+        action.move_to_element_with_offset(close_button_2, -400, -400)
+        action.click()
+        action.perform()
+
+
+
+
 
 
 

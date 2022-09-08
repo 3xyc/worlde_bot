@@ -172,7 +172,7 @@ def play(words_dict):
     for b in alph:
         alpha_pos.update({b: {i: 5 for i in range(5)}})
     greens, yellows, blacks = {}, {}, {}
-    next_guess = "aaaaa"
+    next_guess = "salet"
 
     guess_list = [word for word in words_dict]
     sorted_by_vowels = sorted(guess_list, key=lambda word: sum(ch in 'aeiou' for ch in word), reverse=True)
@@ -182,7 +182,7 @@ def play(words_dict):
                                            key=lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
 
     output_relevant = compare_guess(guess_list, relevancy_dict)
-    input("load...")
+   # input("load...")
     while len(words_dict) >= 1:
        # x = input("wait..")
         print(web_connector.read_last_row())

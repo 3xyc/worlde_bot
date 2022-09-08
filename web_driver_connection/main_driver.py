@@ -15,6 +15,7 @@ class WordleConnection:
         self.headless = headless
         self.driver = self.connect()
         self.board, self.tiles = self.load_board_and_tiles()
+
         self.current_index = 0
         self.keyboard = self.load_keyboard()
         self.close_pop_ups()

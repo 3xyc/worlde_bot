@@ -106,8 +106,6 @@ class WordleConnection:
 
 
 
-
-
 if __name__ == "__main__":
     wordle_connection = WordleConnection()
 

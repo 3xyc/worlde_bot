@@ -180,8 +180,10 @@ def play(words_dict):
     output = ('sorted by vowels: ', sorted(sorted_by_vowels,
                                            key=lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
 
+
     output_relevant = compare_guess(guess_list, relevancy_dict)
-    next_guess = 'crane'
+    next_guess = 'salet'
+
 
    # input("load...")
     while len(words_dict) >= 1:
@@ -256,14 +258,11 @@ def relevancy_score(input_dict):
     #print("Sortiert nach Relevanz: ", relevancy_dict)
     return relevancy_dict
 
-
-
 def compare_guess(guess_list, relevancy_dict):
 
     output_relevant = [word for (key, word) in relevancy_dict.items() if word in guess_list]
 
     return output_relevant
-
 
 def generate_guess(guess_list, output_relevant):
     if len(output_relevant) > 0:
@@ -279,7 +278,6 @@ def generate_guess(guess_list, output_relevant):
         print('GUESS:',guess)
         return guess
 
-
 def pre_processing():
     english_words = load_words()
     words_dict = {word: 1 for word in english_words if len(word) == 5}
@@ -290,7 +288,6 @@ def pre_processing():
     output_relevant = compare_guess(guess_list, relevancy_dict)
 
     return words_dict, guess_list
-
 
 
 if __name__ == '__main__':

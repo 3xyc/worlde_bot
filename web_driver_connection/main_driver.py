@@ -62,10 +62,11 @@ class WordleConnection:
     def get_coloring(self):
         time.sleep(2)
         result = ""
-        if self.current_index < 25:
+        if self.current_index >= 0:
             greens = []
             for i, tile in enumerate(self.tiles[self.current_index:self.current_index+5:]):
                 state = tile.get_attribute("data-state")
+                print(dir(tile))
                 print(state)
                 if state == 'absent':
                     result+=tile.text.lower()
@@ -79,7 +80,7 @@ class WordleConnection:
                     for i in range(5):
                         self.keyboard["del"].click()
                     return False, False
-            self.current_index +=5
+            self.current_index += 5
         print(result)
         print(greens)
         return result, greens
@@ -88,22 +89,15 @@ class WordleConnection:
         close_button_1 = self.driver.find_element(By.ID, "pz-gdpr-btn-closex")
         close_button_1.click()
 
-        close_button_2 = self.driver.find_element(By.CLASS_NAME, "dark")
+        close_button_2 = self.driver.find_element(By.CLASS_NAME, "Modal-module_closeIcon__b4z74")
+        close_button_2.click()
 
-        action = webdriver.common.action_chains.ActionChains(self.driver)
-        action.move_to_element_with_offset(close_button_2, -400, -400)
-        action.click()
-        action.perform()
+        #action = webdriver.common.action_chains.ActionChains(self.driver)
+        #action.move_to_element_with_offset(close_button_2, -400, -400)
+        #action.click()
+        #action.perform()
 
-
-
-
-
-
-
-        self.current_index += 5
-
-    def write(self, guess="guess"):
+    def write(self, guess):
         print("Try to write: ",guess)
         for b in guess:
             self.keyboard[b].click()

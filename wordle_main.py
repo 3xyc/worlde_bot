@@ -172,7 +172,6 @@ def play(words_dict):
     for b in alph:
         alpha_pos.update({b: {i: 5 for i in range(5)}})
     greens, yellows, blacks = {}, {}, {}
-    next_guess = "salet"
 
     guess_list = [word for word in words_dict]
     sorted_by_vowels = sorted(guess_list, key=lambda word: sum(ch in 'aeiou' for ch in word), reverse=True)
@@ -182,16 +181,15 @@ def play(words_dict):
                                            key=lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
 
     output_relevant = compare_guess(guess_list, relevancy_dict)
+    next_guess = 'crane'
+
    # input("load...")
     while len(words_dict) >= 1:
-        print(web_connector.read_last_row())
-
-        word_input, new_greens = web_connector.write(guess = next_guess)
+        word_input, new_greens = web_connector.write(guess=next_guess)
         while not word_input:
             print("here")
             print(word_input)
             next_guess = generate_guess(guess_list, output_relevant)
-            print("next_guess")
             print(next_guess)
             word_input, new_greens = web_connector.write(guess=next_guess)
 
@@ -218,18 +216,18 @@ def play(words_dict):
         apply_blacks(alpha_pos, blacks)
         print('G Y B', greens, yellows, blacks)
 
-        words_dict = check(alpha_pos, greens, yellows, blacks, words_dict)
+        words_dict_filtered = check(alpha_pos, greens, yellows, blacks, words_dict)
 
-        guess_list = [word for word in words_dict]
+        guess_list_filtered = [word for word in words_dict_filtered]
 
-        sorted_by_vowels = sorted(guess_list, key = lambda word: sum(ch in 'aeiou' for ch in word))
+        sorted_by_vowels = sorted(guess_list_filtered, key = lambda word: sum(ch in 'aeiou' for ch in word))
 
-        relevancy_dict = relevancy_score(guess_list)
+        relevancy_dict = relevancy_score(guess_list_filtered)
 
         output = ('sorted by vowels: ', sorted(sorted_by_vowels,
                                         key = lambda word: sum(ch in 'aeiou' for ch in word if ch not in greens)))
 
-        output_relevant = compare_guess(guess_list, relevancy_dict)
+        output_relevant = compare_guess(guess_list_filtered, relevancy_dict)
 
         # output = liste, output relevant = relevanzliste
         print(output)
@@ -290,9 +288,6 @@ def pre_processing():
     frequent_words = open('unigram_freq.csv', mode='r')
 
     output_relevant = compare_guess(guess_list, relevancy_dict)
-
-
-    print(play(words_dict))
 
     return words_dict, guess_list
 

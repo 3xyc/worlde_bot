@@ -60,7 +60,7 @@ class WordleConnection:
         return keyboard
 
     def get_coloring(self):
-        time.sleep(2)
+        time.sleep(1)
         result = ""
         if self.current_index >= 0:
             greens = []
